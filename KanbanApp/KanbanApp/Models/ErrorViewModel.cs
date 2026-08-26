@@ -1,4 +1,4 @@
-namespace Kanban.Models
+namespace KanbanApp.Models
 {
     public class ErrorViewModel
     {

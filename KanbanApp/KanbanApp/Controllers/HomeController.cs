@@ -1,8 +1,8 @@
-using Kanban.Models;
+using KanbanApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Kanban.Controllers
+namespace KanbanApp.Controllers
 {
     public class HomeController : Controller
     {
