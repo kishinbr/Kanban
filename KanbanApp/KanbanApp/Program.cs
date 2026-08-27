@@ -1,11 +1,11 @@
 using KanbanApp.Data;
-
+using KanbanApp.Data.Repositorios;
 var builder = WebApplication.CreateBuilder(args);
-
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ConexaoBanco>();
-
+builder.Services.AddScoped<UsuarioRepositorio>();
 
 var app = builder.Build();
 
