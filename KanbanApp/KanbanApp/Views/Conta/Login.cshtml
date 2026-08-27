@@ -2,28 +2,161 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Entrar</h2>
+<style>
+    .login-container {
+        min-height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div style="color: red;">
-        @foreach (var erro in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@erro.ErrorMessage</p>
+    .login-card {
+        width: 100%;
+        max-width: 420px;
+        background-color: #0d1b2a;
+        border: 1px solid #495057;
+    }
+
+    .login-titulo {
+        color: #0dcaf0;
+        font-weight: 700;
+    }
+
+    .login-input {
+        background-color: #212529 !important;
+        color: #fff !important;
+        border: 1px solid #495057 !important;
+    }
+
+        .login-input:focus {
+            background-color: #212529 !important;
+            color: #fff !important;
+            border-color: #0dcaf0 !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.15);
         }
-    </div>
-}
 
-<form method="post" action="/Conta/Login">
-    <div>
-        <label>Email:</label>
-        <input type="email" name="email" required />
-    </div>
-    <div>
-        <label>Senha:</label>
-        <input type="password" name="senha" required />
-    </div>
-    <button type="submit">Entrar</button>
-</form>
+        .login-input::placeholder {
+            color: #6c757d;
+        }
 
-<p>Não tem conta? <a href="/Conta/Cadastro">Cadastrar</a></p>
+    .login-cadastro {
+        color: #0dcaf0;
+        text-decoration: none;
+    }
+
+        .login-cadastro:hover {
+            color: #6edff6;
+            text-decoration: underline;
+        }
+</style>
+
+
+<div class="login-container">
+
+    <div class="card login-card shadow-lg rounded-3">
+
+        <!-- Cabeçalho -->
+        <div class="card-header bg-dark border-secondary text-center p-4">
+
+            <h2 class="login-titulo mb-1">
+                Entrar
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Acesse sua conta no KanbanApp
+            </p>
+
+        </div>
+
+
+        <!-- Corpo -->
+        <div class="card-body p-4">
+
+            <!-- Erros -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+
+                    <strong>Não foi possível entrar.</strong>
+
+                    @foreach (var erro in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>
+                            @erro.ErrorMessage
+                        </div>
+                    }
+
+                </div>
+            }
+
+
+            <!-- Formulário -->
+            <form method="post" action="/Conta/Login">
+
+                <!-- Email -->
+                <div class="mb-3">
+
+                    <label for="email"
+                           class="form-label text-light">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           class="form-control login-input"
+                           placeholder="Digite seu email"
+                           autocomplete="email"
+                           required />
+
+                </div>
+
+
+                <!-- Senha -->
+                <div class="mb-4">
+
+                    <label for="senha"
+                           class="form-label text-light">
+                        Senha
+                    </label>
+
+                    <input type="password"
+                           id="senha"
+                           name="senha"
+                           class="form-control login-input"
+                           placeholder="Digite sua senha"
+                           autocomplete="current-password"
+                           required />
+
+                </div>
+
+
+                <!-- Botão -->
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Entrar
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Rodapé -->
+        <div class="card-footer bg-dark border-secondary text-center p-3">
+
+            <span class="text-secondary">
+                Não tem uma conta?
+            </span>
+
+            <a href="/Conta/Cadastro"
+               class="login-cadastro ms-1">
+                Cadastre-se
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -2,32 +2,180 @@
     ViewData["Title"] = "Cadastro";
 }
 
-<h2>Criar Conta</h2>
+<style>
+    .cadastro-container {
+        min-height: 75vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-@if (!ViewData.ModelState.IsValid)
-{
-    <div style="color: red;">
-        @foreach (var erro in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@erro.ErrorMessage</p>
+    .cadastro-card {
+        width: 100%;
+        max-width: 420px;
+        background-color: #0d1b2a;
+        border: 1px solid #495057;
+    }
+
+    .cadastro-titulo {
+        color: #0dcaf0;
+        font-weight: 700;
+    }
+
+    .cadastro-input {
+        background-color: #212529 !important;
+        color: #fff !important;
+        border: 1px solid #495057 !important;
+    }
+
+        .cadastro-input:focus {
+            background-color: #212529 !important;
+            color: #fff !important;
+            border-color: #0dcaf0 !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.15);
         }
-    </div>
-}
 
-<form method="post" action="/Conta/Cadastro">
-    <div>
-        <label>Nome:</label>
-        <input type="text" name="nome" required />
-    </div>
-    <div>
-        <label>Email:</label>
-        <input type="email" name="email" required />
-    </div>
-    <div>
-        <label>Senha:</label>
-        <input type="password" name="senha" required />
-    </div>
-    <button type="submit">Cadastrar</button>
-</form>
+        .cadastro-input::placeholder {
+            color: #6c757d;
+        }
 
-<p>Já tem conta? <a href="/Conta/Login">Entrar</a></p>
+    .cadastro-login {
+        color: #0dcaf0;
+        text-decoration: none;
+    }
+
+        .cadastro-login:hover {
+            color: #6edff6;
+            text-decoration: underline;
+        }
+</style>
+
+
+<div class="cadastro-container">
+
+    <div class="card cadastro-card shadow-lg rounded-3">
+
+        <!-- Cabeçalho -->
+        <div class="card-header bg-dark border-secondary text-center p-4">
+
+            <h2 class="cadastro-titulo mb-1">
+                Criar Conta
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Crie sua conta no KanbanApp
+            </p>
+
+        </div>
+
+
+        <!-- Corpo -->
+        <div class="card-body p-4">
+
+            <!-- Erros -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+
+                    <strong>Não foi possível criar sua conta.</strong>
+
+                    @foreach (var erro in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div>
+                            @erro.ErrorMessage
+                        </div>
+                    }
+
+                </div>
+            }
+
+
+            <!-- Formulário -->
+            <form method="post" action="/Conta/Cadastro">
+
+                <!-- Nome -->
+                <div class="mb-3">
+
+                    <label for="nome"
+                           class="form-label text-light">
+                        Nome
+                    </label>
+
+                    <input type="text"
+                           id="nome"
+                           name="nome"
+                           class="form-control cadastro-input"
+                           placeholder="Digite seu nome"
+                           autocomplete="name"
+                           required />
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="mb-3">
+
+                    <label for="email"
+                           class="form-label text-light">
+                        Email
+                    </label>
+
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           class="form-control cadastro-input"
+                           placeholder="Digite seu email"
+                           autocomplete="email"
+                           required />
+
+                </div>
+
+
+                <!-- Senha -->
+                <div class="mb-4">
+
+                    <label for="senha"
+                           class="form-label text-light">
+                        Senha
+                    </label>
+
+                    <input type="password"
+                           id="senha"
+                           name="senha"
+                           class="form-control cadastro-input"
+                           placeholder="Digite sua senha"
+                           autocomplete="new-password"
+                           required />
+
+                </div>
+
+
+                <!-- Botão -->
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Cadastrar
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Rodapé -->
+        <div class="card-footer bg-dark border-secondary text-center p-3">
+
+            <span class="text-secondary">
+                Já tem uma conta?
+            </span>
+
+            <a href="/Conta/Login"
+               class="cadastro-login ms-1">
+                Entrar
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
