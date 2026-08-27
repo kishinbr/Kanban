@@ -77,8 +77,11 @@
                     }
                     @if (ehDono)
                     {
-                        <a href="#" style="font-size: 0.7em;"
-                           onclick="abrirModalEdicao(@cartao.Id, '@Html.Raw(Html.Encode(cartao.Titulo).Replace("'", "\\'"))', '@Html.Raw(Html.Encode(cartao.Descricao ?? "").Replace("'", "\\'"))'); return false;">✏️</a>
+                        <a href="#" class="btn-editar-cartao" style="font-size: 0.7em;"
+                           data-id="@cartao.Id"
+                           data-titulo="@cartao.Titulo"
+                           data-descricao="@cartao.Descricao"
+                           onclick="abrirModalEdicao(this); return false;">✏️</a>
                         <form method="post" action="/Quadro/ExcluirCartao" style="display: inline;"
                               onsubmit="return confirm('Tem certeza que deseja excluir este cartão?');">
                             <input type="hidden" name="cartaoId" value="@cartao.Id" />
@@ -125,10 +128,10 @@
 </div>
 
 <script>
-    function abrirModalEdicao(id, titulo, descricao) {
-        document.getElementById('modalCartaoId').value = id;
-        document.getElementById('modalTitulo').value = titulo;
-        document.getElementById('modalDescricao').value = descricao;
+    function abrirModalEdicao(link) {
+        document.getElementById('modalCartaoId').value = link.dataset.id;
+        document.getElementById('modalTitulo').value = link.dataset.titulo;
+        document.getElementById('modalDescricao').value = link.dataset.descricao;
         document.getElementById('modalEdicao').style.display = 'flex';
     }
 
