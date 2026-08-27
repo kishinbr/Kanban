@@ -179,5 +179,36 @@ namespace KanbanApp.Controllers
 
             return RedirectToAction("Ver", new { id = quadroId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarCartao(int id, string titulo, string? descricao, int quadroId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _cartaoRepositorio.Editar(id, titulo, descricao);
+
+            return RedirectToAction("Ver", new { id = quadroId });
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditarColuna(int id, string nome, int quadroId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _colunaRepositorio.Editar(id, nome);
+
+            return RedirectToAction("Ver", new { id = quadroId });
+        }
     }
 }

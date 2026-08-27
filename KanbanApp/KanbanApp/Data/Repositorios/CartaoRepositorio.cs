@@ -56,5 +56,12 @@ namespace KanbanApp.Data.Repositorios
             string sql = "DELETE FROM cartoes WHERE id = @Id";
             await conexao.ExecuteAsync(sql, new { Id = id });
         }
+
+        public async Task<Cartao?> BuscarPorId(int id)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "SELECT * FROM cartoes WHERE id = @Id";
+            return await conexao.QueryFirstOrDefaultAsync<Cartao>(sql, new { Id = id });
+        }
     }
 }

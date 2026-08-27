@@ -42,5 +42,12 @@ namespace KanbanApp.Data.Repositorios
             string sql = "SELECT * FROM colunas WHERE id = @Id";
             return await conexao.QueryFirstOrDefaultAsync<Coluna>(sql, new { Id = id });
         }
+
+        public async Task Editar(int id, string nome)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "UPDATE colunas SET nome = @Nome WHERE id = @Id";
+            await conexao.ExecuteAsync(sql, new { Id = id, Nome = nome });
+        }
     }
 }
