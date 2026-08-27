@@ -6,6 +6,8 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ConexaoBanco>();
 builder.Services.AddScoped<UsuarioRepositorio>();
+builder.Services.AddScoped<QuadroRepositorio>();
+
 builder.Services.AddAuthentication("CookieKanban")
     .AddCookie("CookieKanban", options =>
     {
@@ -33,7 +35,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Conta}/{action=Login}/{id?}")
     .WithStaticAssets();
 
 

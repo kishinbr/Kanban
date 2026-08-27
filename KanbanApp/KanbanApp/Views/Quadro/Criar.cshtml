@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Criar Kanban";
+}
+
+<h2>Criar Novo Kanban</h2>
+
+<form method="post" action="/Quadro/Criar">
+    <div>
+        <label>Nome do Kanban:</label>
+        <input type="text" name="nome" required />
+    </div>
+    <button type="submit">Criar</button>
+</form>
+
+<p><a href="/Painel">Voltar</a></p>

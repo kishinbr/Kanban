@@ -1,0 +1,41 @@
+﻿@model IEnumerable<KanbanApp.Models.Quadro>
+
+@{
+    ViewData["Title"] = "Meu Painel";
+}
+
+<h2>Olá, @User.Identity!.Name</h2>
+<p><a href="/Conta/Logout">Sair</a></p>
+
+<hr />
+
+<h3>Meus Kanbans</h3>
+
+@if (!Model.Any())
+{
+    <p>Você ainda não participa de nenhum kanban.</p>
+}
+else
+{
+    <ul>
+        @foreach (var quadro in Model)
+        {
+            <li>
+                <strong>@quadro.Nome</strong>
+                (@(quadro.Papel == "dono" ? "Você é o dono" : "Espectador"))
+                — Código: @quadro.CodigoCompartilhamento
+                <a href="/Quadro/Ver/@quadro.Id">Abrir</a>
+            </li>
+        }
+    </ul>
+}
+
+<hr />
+
+<p><a href="/Quadro/Criar">+ Criar novo kanban</a></p>
+
+<form method="post" action="/Quadro/Entrar">
+    <label>Entrar com código:</label>
+    <input type="text" name="codigo" required />
+    <button type="submit">Entrar</button>
+</form>

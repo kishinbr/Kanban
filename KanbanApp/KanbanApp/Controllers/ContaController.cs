@@ -1,6 +1,7 @@
 ﻿using KanbanApp.Data.Repositorios;
 using KanbanApp.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -70,7 +71,12 @@ namespace KanbanApp.Controllers
 
             await HttpContext.SignInAsync("CookieKanban", new ClaimsPrincipal(claimsIdentity));
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Painel");
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("CookieKanban");
+            return RedirectToAction("Login");
         }
     }
 }
