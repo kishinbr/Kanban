@@ -12,6 +12,15 @@
 </p>
 <p><a href="/Painel/Index">Voltar ao Painel</a></p>
 
+@if (!ehDono)
+{
+    <form method="post" action="/Quadro/Sair" style="display: inline;"
+          onsubmit="return confirm('Tem certeza que deseja sair deste kanban? Você vai perder o acesso a ele.');">
+        <input type="hidden" name="quadroId" value="@Model.Quadro.Id" />
+        <button type="submit">Sair do Kanban</button>
+    </form>
+}
+
 <hr />
 
 @if (ehDono)

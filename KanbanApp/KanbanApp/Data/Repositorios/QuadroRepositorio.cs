@@ -128,5 +128,11 @@ namespace KanbanApp.Data.Repositorios
             string sql = "SELECT * FROM quadros WHERE id = @Id";
             return await conexao.QueryFirstOrDefaultAsync<Quadro>(sql, new { Id = id });
         }
+        public async Task RemoverMembro(int quadroId, int usuarioId)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "DELETE FROM membros WHERE quadro_id = @QuadroId AND usuario_id = @UsuarioId AND papel = 'espectador'";
+            await conexao.ExecuteAsync(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
+        }
     }
 }

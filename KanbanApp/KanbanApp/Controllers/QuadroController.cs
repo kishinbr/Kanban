@@ -210,5 +210,22 @@ namespace KanbanApp.Controllers
 
             return RedirectToAction("Ver", new { id = quadroId });
         }
+        [HttpPost]
+        public async Task<IActionResult> Sair(int quadroId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+
+            if (papel != "espectador")
+            {
+                TempData["Erro"] = "Você não pode sair deste kanban.";
+                return RedirectToAction("Ver", new { id = quadroId });
+            }
+
+            await _quadroRepositorio.RemoverMembro(quadroId, usuarioId);
+
+            return RedirectToAction("Index", "Painel");
+        }
     }
 }
