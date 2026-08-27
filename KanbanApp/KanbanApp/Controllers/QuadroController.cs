@@ -143,6 +143,41 @@ namespace KanbanApp.Controllers
 
             return RedirectToAction("Ver", new { id = coluna.QuadroId });
         }
+        [HttpPost]
+        public async Task<IActionResult> ExcluirColuna(int colunaId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+            var coluna = await _colunaRepositorio.BuscarPorId(colunaId);
+            if (coluna == null)
+            {
+                return NotFound();
+            }
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(coluna.QuadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _colunaRepositorio.Excluir(colunaId);
+
+            return RedirectToAction("Ver", new { id = coluna.QuadroId });
+        }
+        [HttpPost]
+        public async Task<IActionResult> ExcluirCartao(int cartaoId, int quadroId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _cartaoRepositorio.Excluir(cartaoId);
+
+            return RedirectToAction("Ver", new { id = quadroId });
+        }
     }
 }

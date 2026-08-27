@@ -28,7 +28,17 @@
     @foreach (var colunaComCartoes in Model.Colunas)
     {
         <div style="border: 1px solid #ccc; padding: 10px; min-width: 250px;">
-            <h4>@colunaComCartoes.Coluna.Nome</h4>
+            <h4>
+                @colunaComCartoes.Coluna.Nome
+                @if (ehDono)
+                {
+                    <form method="post" action="/Quadro/ExcluirColuna" style="display: inline;"
+                          onsubmit="return confirm('Tem certeza que deseja excluir esta coluna e todos os cartões dela?');">
+                        <input type="hidden" name="colunaId" value="@colunaComCartoes.Coluna.Id" />
+                        <button type="submit" style="font-size: 0.7em;">🗑️</button>
+                    </form>
+                }
+            </h4>
 
             @foreach (var cartao in colunaComCartoes.Cartoes)
             {
@@ -37,6 +47,15 @@
                     @if (!string.IsNullOrEmpty(cartao.Descricao))
                     {
                         <p style="font-size: 0.9em;">@cartao.Descricao</p>
+                    }
+                    @if (ehDono)
+                    {
+                        <form method="post" action="/Quadro/ExcluirCartao" style="display: inline;"
+                              onsubmit="return confirm('Tem certeza que deseja excluir este cartão?');">
+                            <input type="hidden" name="cartaoId" value="@cartao.Id" />
+                            <input type="hidden" name="quadroId" value="@Model.Quadro.Id" />
+                            <button type="submit" style="font-size: 0.7em;">🗑️</button>
+                        </form>
                     }
                 </div>
             }
