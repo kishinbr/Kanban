@@ -1,6 +1,8 @@
 ﻿using KanbanApp.Data.Repositorios;
 using KanbanApp.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace KanbanApp.Controllers
 {
@@ -45,6 +47,30 @@ namespace KanbanApp.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(string email, string senha)
+        {
+            var usuario = await _usuarioRepositorio.BuscarPorEmail(email);
+
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash))
+            {
+                ModelState.AddModelError("", "Email ou senha inválidos.");
+                return View();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Name, usuario.Nome),
+                new Claim(ClaimTypes.Email, usuario.Email)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, "CookieKanban");
+
+            await HttpContext.SignInAsync("CookieKanban", new ClaimsPrincipal(claimsIdentity));
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

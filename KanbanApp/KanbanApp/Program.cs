@@ -6,7 +6,12 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ConexaoBanco>();
 builder.Services.AddScoped<UsuarioRepositorio>();
-
+builder.Services.AddAuthentication("CookieKanban")
+    .AddCookie("CookieKanban", options =>
+    {
+        options.LoginPath = "/Conta/Login";
+        options.AccessDeniedPath = "/Conta/Login";
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +26,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
