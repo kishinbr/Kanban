@@ -91,5 +91,29 @@ namespace KanbanApp.Data.Repositorios
 
             return codigo;
         }
+        public async Task<Quadro?> BuscarPorCodigo(string codigo)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "SELECT * FROM quadros WHERE codigo_compartilhamento = @Codigo";
+            return await conexao.QueryFirstOrDefaultAsync<Quadro>(sql, new { Codigo = codigo });
+        }
+
+        public async Task<bool> UsuarioJaEhMembro(int quadroId, int usuarioId)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "SELECT COUNT(1) FROM membros WHERE quadro_id = @QuadroId AND usuario_id = @UsuarioId";
+            int count = await conexao.QuerySingleAsync<int>(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
+            return count > 0;
+        }
+
+        public async Task AdicionarEspectador(int quadroId, int usuarioId)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = @"
+        INSERT INTO membros (quadro_id, usuario_id, papel)
+        VALUES (@QuadroId, @UsuarioId, 'espectador')";
+
+            await conexao.ExecuteAsync(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
+        }
     }
 }

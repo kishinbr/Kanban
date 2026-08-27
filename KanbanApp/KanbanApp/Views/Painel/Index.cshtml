@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Meu Painel";
 }
+@if (TempData["Erro"] != null)
+{
+    <div style="color: red;">
+        <p>@TempData["Erro"]</p>
+    </div>
+}
 
 <h2>Olá, @User.Identity!.Name</h2>
 <p><a href="/Conta/Logout">Sair</a></p>
