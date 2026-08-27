@@ -1,4 +1,5 @@
 ﻿using KanbanApp.Data.Repositorios;
+using KanbanApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,10 +10,17 @@ namespace KanbanApp.Controllers
     public class QuadroController : Controller
     {
         private readonly QuadroRepositorio _quadroRepositorio;
+        private readonly ColunaRepositorio _colunaRepositorio;
+        private readonly CartaoRepositorio _cartaoRepositorio;
 
-        public QuadroController(QuadroRepositorio quadroRepositorio)
+        public QuadroController(
+             QuadroRepositorio quadroRepositorio,
+             ColunaRepositorio colunaRepositorio,
+             CartaoRepositorio cartaoRepositorio)
         {
             _quadroRepositorio = quadroRepositorio;
+            _colunaRepositorio = colunaRepositorio;
+            _cartaoRepositorio = cartaoRepositorio;
         }
 
         [HttpGet]
@@ -57,5 +65,84 @@ namespace KanbanApp.Controllers
 
             return RedirectToAction("Index", "Painel");
         }
+        public async Task<IActionResult> Ver(int id)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var quadro = await _quadroRepositorio.BuscarPorId(id);
+            if (quadro == null)
+            {
+                return NotFound();
+            }
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(id, usuarioId);
+            if (papel == null)
+            {
+                return Forbid();
+            }
+
+            var colunas = await _colunaRepositorio.ListarPorQuadro(id);
+
+            var viewModel = new QuadroDetalheViewModel
+            {
+                Quadro = quadro,
+                Papel = papel,
+                Colunas = new List<ColunaComCartoes>()
+            };
+
+            foreach (var coluna in colunas)
+            {
+                var cartoes = await _cartaoRepositorio.ListarPorColuna(coluna.Id);
+                viewModel.Colunas.Add(new ColunaComCartoes
+                {
+                    Coluna = coluna,
+                    Cartoes = cartoes.ToList()
+                });
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CriarColuna(int quadroId, string nome)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _colunaRepositorio.Criar(quadroId, nome);
+
+            return RedirectToAction("Ver", new { id = quadroId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CriarCartao(int colunaId, string titulo)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var coluna = await _colunaRepositorio.BuscarPorId(colunaId);
+            if (coluna == null)
+            {
+                return NotFound();
+            }
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(coluna.QuadroId, usuarioId);
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            var cartoesExistentes = await _cartaoRepositorio.ListarPorColuna(colunaId);
+            int novaOrdem = cartoesExistentes.Any() ? cartoesExistentes.Max(c => c.Ordem) + 1 : 0;
+
+            await _cartaoRepositorio.Criar(colunaId, titulo, null, novaOrdem);
+
+            return RedirectToAction("Ver", new { id = coluna.QuadroId });
+        }
+
     }
 }

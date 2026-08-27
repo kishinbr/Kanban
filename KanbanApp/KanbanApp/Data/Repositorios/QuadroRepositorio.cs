@@ -115,5 +115,18 @@ namespace KanbanApp.Data.Repositorios
 
             await conexao.ExecuteAsync(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
         }
+        public async Task<string?> BuscarPapelDoUsuario(int quadroId, int usuarioId)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "SELECT papel FROM membros WHERE quadro_id = @QuadroId AND usuario_id = @UsuarioId";
+            return await conexao.QueryFirstOrDefaultAsync<string?>(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
+        }
+
+        public async Task<Quadro?> BuscarPorId(int id)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "SELECT * FROM quadros WHERE id = @Id";
+            return await conexao.QueryFirstOrDefaultAsync<Quadro>(sql, new { Id = id });
+        }
     }
 }

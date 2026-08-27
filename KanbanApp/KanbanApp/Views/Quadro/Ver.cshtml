@@ -1,0 +1,54 @@
+﻿@model KanbanApp.ViewModels.QuadroDetalheViewModel
+
+@{
+    ViewData["Title"] = Model.Quadro.Nome;
+    bool ehDono = Model.Papel == "dono";
+}
+
+<h2>@Model.Quadro.Nome</h2>
+<p>
+    Código: <strong>@Model.Quadro.CodigoCompartilhamento</strong>
+    — Você é: <strong>@(ehDono ? "Dono" : "Espectador")</strong>
+</p>
+<p><a href="/Painel/Index">Voltar ao Painel</a></p>
+
+<hr />
+
+@if (ehDono)
+{
+    <form method="post" action="/Quadro/CriarColuna" style="margin-bottom: 20px;">
+        <input type="hidden" name="quadroId" value="@Model.Quadro.Id" />
+        <label>Nova coluna:</label>
+        <input type="text" name="nome" required />
+        <button type="submit">Adicionar Coluna</button>
+    </form>
+}
+
+<div style="display: flex; gap: 20px;">
+    @foreach (var colunaComCartoes in Model.Colunas)
+    {
+        <div style="border: 1px solid #ccc; padding: 10px; min-width: 250px;">
+            <h4>@colunaComCartoes.Coluna.Nome</h4>
+
+            @foreach (var cartao in colunaComCartoes.Cartoes)
+            {
+                <div style="background: #f0f0f0; padding: 8px; margin-bottom: 8px; border-radius: 4px;">
+                    <strong>@cartao.Titulo</strong>
+                    @if (!string.IsNullOrEmpty(cartao.Descricao))
+                    {
+                        <p style="font-size: 0.9em;">@cartao.Descricao</p>
+                    }
+                </div>
+            }
+
+            @if (ehDono)
+            {
+                <form method="post" action="/Quadro/CriarCartao">
+                    <input type="hidden" name="colunaId" value="@colunaComCartoes.Coluna.Id" />
+                    <input type="text" name="titulo" placeholder="Título do cartão" required />
+                    <button type="submit">+ Cartão</button>
+                </form>
+            }
+        </div>
+    }
+</div>

@@ -7,6 +7,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ConexaoBanco>();
 builder.Services.AddScoped<UsuarioRepositorio>();
 builder.Services.AddScoped<QuadroRepositorio>();
+builder.Services.AddScoped<ColunaRepositorio>();
+builder.Services.AddScoped<CartaoRepositorio>();
 
 builder.Services.AddAuthentication("CookieKanban")
     .AddCookie("CookieKanban", options =>
