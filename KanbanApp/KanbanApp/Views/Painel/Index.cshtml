@@ -4,48 +4,6 @@
     ViewData["Title"] = "Meu Painel";
 }
 
-<!-- CSS local desta View -->
-<style>
-    .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-        max-width: 100% !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
-    }
-
-    .painel-container {
-        background-color: #0d1b2a;
-        min-height: 92vh;
-    }
-
-    .kanban-card {
-        background-color: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(108, 117, 125, 0.5);
-        transition: all 0.2s ease;
-    }
-
-        .kanban-card:hover {
-            border-color: #0dcaf0;
-            transform: translateY(-3px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
-        }
-
-        .kanban-card .nome-kanban {
-            color: #0dcaf0;
-            font-weight: 700;
-        }
-
-    .codigo-kanban {
-        font-family: monospace;
-        letter-spacing: 1px;
-    }
-
-    .area-acao {
-        background-color: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(108, 117, 125, 0.4);
-    }
-</style>
-
-
 <!-- Container Principal -->
 <div class="painel-container text-light p-4 rounded-3 shadow-lg w-100">
 
@@ -58,13 +16,13 @@
             </h2>
 
             <p class="text-secondary mb-0 fs-5">
-                Selecione um Kanban para continuar.
+                Selecione um Kanban, crie um novo ou participe de um existente para continuar.
             </p>
         </div>
 
         <a href="/Conta/Logout"
            class="btn btn-outline-danger">
-            Sair
+            Deslogar
         </a>
 
     </div>
@@ -77,7 +35,70 @@
             @TempData["Erro"]
         </div>
     }
+    <!-- Área de ações -->
+    <div class="row g-3 mt-4 mb-4">
 
+        <!-- Criar -->
+        <div class="col-12 col-lg-6">
+
+            <div class="area-acao rounded-3 p-4 h-100">
+
+                <h4 class="text-info fw-bold mb-2">
+                    Criar um novo Kanban
+                </h4>
+
+                <p class="text-secondary mb-4">
+                    Crie seu próprio quadro e comece a organizar suas tarefas.
+                </p>
+
+                <a href="/Quadro/Criar"
+                   class="btn btn-primary">
+                    + Criar novo Kanban
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Entrar -->
+        <div class="col-12 col-lg-6">
+
+            <div class="area-acao rounded-3 p-4 h-100">
+
+                <h4 class="text-info fw-bold mb-2">
+                    Entrar em um Kanban
+                </h4>
+
+                <p class="text-secondary mb-3">
+                    Possui um código de compartilhamento? Digite abaixo para entrar.
+                </p>
+
+                <form method="post"
+                      action="/Quadro/Entrar">
+
+                    <div class="input-group">
+
+                        <input type="text"
+                               name="codigo"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Digite o código..."
+                               required />
+
+                        <button type="submit"
+                                class="btn btn-outline-info">
+                            Entrar
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- Meus Kanbans -->
     <div class="mb-4">
@@ -159,7 +180,7 @@
                                 <div class="mb-4">
 
                                     <small class="text-secondary d-block mb-1">
-                                        Código de compartilhamento
+                                        Clique para acessar seu Kanban:
                                     </small>
 
                                     
@@ -190,70 +211,7 @@
     </div>
 
 
-    <!-- Área de ações -->
-    <div class="row g-3 mt-4">
-
-        <!-- Criar -->
-        <div class="col-12 col-lg-6">
-
-            <div class="area-acao rounded-3 p-4 h-100">
-
-                <h4 class="text-info fw-bold mb-2">
-                    Criar um novo Kanban
-                </h4>
-
-                <p class="text-secondary mb-4">
-                    Crie seu próprio quadro e comece a organizar suas tarefas.
-                </p>
-
-                <a href="/Quadro/Criar"
-                   class="btn btn-primary">
-                    + Criar novo Kanban
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <!-- Entrar -->
-        <div class="col-12 col-lg-6">
-
-            <div class="area-acao rounded-3 p-4 h-100">
-
-                <h4 class="text-info fw-bold mb-2">
-                    Entrar em um Kanban
-                </h4>
-
-                <p class="text-secondary mb-3">
-                    Possui um código de compartilhamento? Digite abaixo para entrar.
-                </p>
-
-                <form method="post"
-                      action="/Quadro/Entrar">
-
-                    <div class="input-group">
-
-                        <input type="text"
-                               name="codigo"
-                               class="form-control bg-dark text-light border-secondary"
-                               placeholder="Digite o código..."
-                               required />
-
-                        <button type="submit"
-                                class="btn btn-outline-info">
-                            Entrar
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
+    
 
 </div>
 

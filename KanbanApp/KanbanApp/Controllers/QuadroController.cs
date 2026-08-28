@@ -82,12 +82,14 @@ namespace KanbanApp.Controllers
             }
 
             var colunas = await _colunaRepositorio.ListarPorQuadro(id);
+            var membros = await _quadroRepositorio.ListarMembros(id);
 
             var viewModel = new QuadroDetalheViewModel
             {
                 Quadro = quadro,
                 Papel = papel,
-                Colunas = new List<ColunaComCartoes>()
+                Colunas = new List<ColunaComCartoes>(),
+                Membros = membros.ToList()
             };
 
             foreach (var coluna in colunas)
@@ -224,6 +226,22 @@ namespace KanbanApp.Controllers
             }
 
             await _quadroRepositorio.RemoverMembro(quadroId, usuarioId);
+
+            return RedirectToAction("Index", "Painel");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Excluir(int quadroId)
+        {
+            int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(quadroId, usuarioId);
+
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _quadroRepositorio.Excluir(quadroId);
 
             return RedirectToAction("Index", "Painel");
         }

@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using KanbanApp.Models;
+using KanbanApp.ViewModels;
+
 
 namespace KanbanApp.Data.Repositorios
 {
@@ -133,6 +135,25 @@ namespace KanbanApp.Data.Repositorios
             using var conexao = _conexaoBanco.CriarConexao();
             string sql = "DELETE FROM membros WHERE quadro_id = @QuadroId AND usuario_id = @UsuarioId AND papel = 'espectador'";
             await conexao.ExecuteAsync(sql, new { QuadroId = quadroId, UsuarioId = usuarioId });
+        }
+        public async Task Excluir(int id)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+            string sql = "DELETE FROM quadros WHERE id = @Id";
+            await conexao.ExecuteAsync(sql, new { Id = id });
+        }
+        public async Task<IEnumerable<MembroInfo>> ListarMembros(int quadroId)
+        {
+            using var conexao = _conexaoBanco.CriarConexao();
+
+            string sql = @"
+        SELECT u.nome, m.papel
+        FROM membros m
+        INNER JOIN usuarios u ON u.id = m.usuario_id
+        WHERE m.quadro_id = @QuadroId
+        ORDER BY m.papel ASC, m.id ASC";
+
+            return await conexao.QueryAsync<MembroInfo>(sql, new { QuadroId = quadroId });
         }
     }
 }

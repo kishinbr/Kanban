@@ -2,14 +2,67 @@
     ViewData["Title"] = "Criar Kanban";
 }
 
-<h2>Criar Novo Kanban</h2>
+<div class="criar-kanban-container">
 
-<form method="post" action="/Quadro/Criar">
-    <div>
-        <label>Nome do Kanban:</label>
-        <input type="text" name="nome" required />
+    <div class="card criar-kanban-card shadow-lg rounded-3">
+
+        <!-- Cabeçalho -->
+        <div class="card-header bg-dark border-secondary text-center p-4">
+
+            <h2 class="criar-kanban-titulo mb-1">
+                Criar Novo Kanban
+            </h2>
+
+            <p class="text-secondary mb-0">
+                Crie um quadro para organizar suas tarefas
+            </p>
+
+        </div>
+
+
+        <!-- Corpo -->
+        <div class="card-body p-4">
+
+            <form method="post" action="/Quadro/Criar">
+
+                <!-- Nome -->
+                <div class="mb-4">
+
+                    <label for="nome"
+                           class="form-label text-light">
+                        Nome do Kanban
+                    </label>
+
+                    <input type="text"
+                           id="nome"
+                           name="nome"
+                           class="form-control criar-kanban-input"
+                           placeholder="Ex: Projeto da Faculdade"
+                           required />
+
+                </div>
+
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a href="/Painel"
+                       class="btn btn-outline-secondary">
+                        Voltar
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Criar Kanban
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
-    <button type="submit">Criar</button>
-</form>
 
-<p><a href="/Painel">Voltar</a></p>
+</div>
+

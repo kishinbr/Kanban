@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace KanbanApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
