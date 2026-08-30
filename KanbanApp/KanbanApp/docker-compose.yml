@@ -1,0 +1,25 @@
+services:
+  banco:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: kanban_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Kanban2024
+    volumes:
+      - dados_postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  kanban:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - banco
+    environment:
+      ConnectionStrings__KanbanDb: "Host=banco;Port=5432;Database=kanban_db;Username=postgres;Password=Kanban2024"
+    ports:
+      - "8080:8080"
+
+volumes:
+  dados_postgres:
