@@ -116,5 +116,34 @@ namespace KanbanApp.Controllers.Api
 
             return Ok(viewModel);
         }
+        [HttpPost("{id}/sair")]
+        public async Task<IActionResult> Sair(int id)
+        {
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(id, UsuarioIdLogado);
+
+            if (papel != "espectador")
+            {
+                return BadRequest(new { mensagem = "Você não pode sair deste kanban." });
+            }
+
+            await _quadroRepositorio.RemoverMembro(id, UsuarioIdLogado);
+
+            return Ok(new { mensagem = "Você saiu do kanban." });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Excluir(int id)
+        {
+            var papel = await _quadroRepositorio.BuscarPapelDoUsuario(id, UsuarioIdLogado);
+
+            if (papel != "dono")
+            {
+                return Forbid();
+            }
+
+            await _quadroRepositorio.Excluir(id);
+
+            return Ok(new { mensagem = "Kanban excluído." });
+        }
     }
 }
