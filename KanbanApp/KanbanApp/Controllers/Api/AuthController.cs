@@ -94,19 +94,19 @@ namespace KanbanApp.Controllers.Api
 
 
         [HttpGet("eu")]
-            [Authorize(AuthenticationSchemes = "Bearer")]
-            public IActionResult Eu()
-            {
-                var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var nome = User.FindFirstValue(ClaimTypes.Name);
-                var email = User.FindFirstValue(ClaimTypes.Email);
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public IActionResult Eu()
+        {
+            var usuarioId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var nome = User.FindFirstValue(ClaimTypes.Name);
+            var email = User.FindFirstValue(ClaimTypes.Email);
 
-                return Ok(new
-                {
-                    usuarioId,
-                    nome,
-                    email
-                });
+            return Ok(new
+            {
+                usuarioId,
+                nome,
+                email
+            });
+        }
     }
-}
 }
