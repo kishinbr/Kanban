@@ -16,6 +16,8 @@ Este é um projeto pessoal de estudo, construído para aprender — na prática 
 
 A ideia central é simples: um **Kanban colaborativo**. Qualquer pessoa pode criar um quadro, organizar colunas e cartões, e convidar outras pessoas para acompanhar (ou não) seu progresso — sem precisar de conta compartilhada ou permissões complicadas.
 
+LINK DE ACESSO : https://kanban-app.bluewave-06d366a7.chilecentral.azurecontainerapps.io
+
 ## ✨ Funcionalidades
 
 **Contas**
